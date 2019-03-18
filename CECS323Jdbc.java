@@ -27,6 +27,7 @@ public class CECS323Jdbc {
     static String INPUT = "";
     static Scanner in;
     static PreparedStatement pstmt;
+    static Statement stmt = null;
 
     
     public static String dispNull(String input) {
@@ -299,6 +300,103 @@ public class CECS323Jdbc {
             e.printStackTrace();
         }
     }
+    
+    //8
+    public static void insertPublisher()
+        {
+             try{
+            Scanner in = new Scanner(System.in);
+            conn = DriverManager.getConnection(DB_URL); //REQUIRED FOR EXECUTION OF STATEMENTS
+
+            System.out.println("Enter publisher name");
+            String name = in.nextLine();
+            System.out.println("Enter publisher address");
+            String address = in.nextLine();
+            System.out.println("Enter publisher phone number");
+            String phone = in.nextLine();
+            System.out.println("Enter publisher email");
+            String email = in.nextLine();
+            System.out.println("Enter publisher that's to be replaced");
+            String previousPublisher = in.nextLine();
+            
+            pstmt=conn.prepareStatement("insert into publishers values(?,?,?,?)");  
+            pstmt.setString(1,name);//1 specifies the first parameter in the query  
+            pstmt.setString(2,address);
+            pstmt.setString(3,phone);
+            pstmt.setString(4,email);
+            
+            System.out.println("inserting publisher...");
+            
+            pstmt.executeUpdate();  
+            
+            pstmt = conn.prepareStatement("UPDATE Books SET publisherName = ? WHERE publisherName = ?");
+            pstmt.setString(1, name);
+            pstmt.setString(2, previousPublisher);
+            pstmt.executeUpdate();
+            
+            pstmt = conn.prepareStatement("DELETE FROM Publishers WHERE publisherName = ?");
+            
+            pstmt.setString(1, previousPublisher);
+            pstmt.executeUpdate();
+            
+            pstmt = conn.prepareStatement("SELECT * FROM Books WHERE publisherName = ?");
+            pstmt.setString(1, name);
+            ResultSet rs = pstmt.executeQuery();
+            
+            displayFormat = "%-30s%-35s%-30s%-30s%-35s\n";
+            System.out.printf(displayFormat, "Title", "Year Published", 
+                    "Number of Pages", "Group Name", "Publisher Name");
+            
+            boolean inside = false;
+            while (rs.next()) {
+                inside = true;
+                //Retrieve by column name
+                String title = rs.getString("bookTitle");
+                String year = rs.getString("yearPublished");
+                String pages = rs.getString("numberPages");
+                String group = rs.getString("groupName");
+                String publisher = rs.getString("publisherName");
+
+
+                //Display values
+                System.out.printf(displayFormat,
+                        dispNull(title),dispNull(year), dispNull(pages),dispNull(group),
+                        dispNull(publisher));
+            }
+            rs.close();
+            
+            System.out.println("New publisher has been added!");
+
+            
+            
+            
+            pstmt.close();  
+            //stmt.close();
+        }catch (SQLException se) {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch (Exception e) {
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally {
+            //finally block used to close resources
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                    return;
+                }
+            } catch (SQLException se2) {
+            }// nothing we can do
+            try {
+                if (conn != null) {
+                    conn.close();
+                    return;
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }//end finally try
+        }//end try
+        }
     
     // 9
     public static void removeBook() {
