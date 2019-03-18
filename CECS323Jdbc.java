@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cecs323.jdbc;
 
 import java.sql.*;
 import java.util.*;
@@ -12,7 +11,7 @@ import java.util.*;
  *
  * @author kermi
  */
-public class CECS323Jdbc {
+public class JDBCSampleSource {
     
      // Database credentials
     static String USER;
@@ -250,16 +249,68 @@ public class CECS323Jdbc {
         try {
             System.out.println("Input book title: ");
             String title = in.nextLine();
+            while(title.isEmpty()){
+                System.out.println("Title is empty. Try again");
+                System.out.println("Input book title: ");
+                 title = in.nextLine();
+            }
             System.out.println("Input year published: ");
-            int year = in.nextInt();
-            in.nextLine();
+            String yearTemp = in.nextLine();
+            while(yearTemp.isEmpty() || !yearTemp.matches("[0-9]+")){
+                System.out.println("Invalid Year. Try again");
+                System.out.println("Input a valid year: ");
+                 yearTemp = in.nextLine();
+            }
+            
+            
+            int year = Integer.parseInt(yearTemp);
+          
             System.out.println("Input number of pages: ");
-            int pages = in.nextInt();
-            in.nextLine();
+            String pagesTemp = in.nextLine();
+            while(pagesTemp.isEmpty() || !pagesTemp.matches("[0-9]+")){
+                System.out.println("Invalid Pages input. Try again");
+                System.out.println("Input number of pages: ");
+                 pagesTemp = in.nextLine();
+                
+            }
+            
+            int pages = Integer.parseInt(pagesTemp);
+            
             System.out.println("Input group name: ");
             String group = in.nextLine();
+            while(group.isEmpty()){
+                System.out.println("Group is empty. Try again");
+                System.out.println("Input group name: ");
+                 group = in.nextLine();
+                
+            }
+            pstmt = conn.prepareStatement (
+                    "SELECT groupName FROM WritingGroup WHERE groupName = ?"
+            );
+            pstmt.setString(1,group);
+            ResultSet rs2 = pstmt.executeQuery();
+            if(!rs2.next()){
+                System.out.println("Group does not exist\nGoing back to main menu");
+                return;
+            }
+            
             System.out.println("Input publisher name: ");
             String publisher = in.nextLine();
+            while(publisher.isEmpty()){
+                System.out.println("Publisher name is empty. Try again");
+                System.out.println("Input publisher name: ");
+                 publisher = in.nextLine();
+                
+            }
+            pstmt = conn.prepareStatement (
+                    "SELECT publisherName FROM Publishers WHERE publisherName = ?"
+            );
+            pstmt.setString(1,publisher);
+            rs2 = pstmt.executeQuery();
+            if(!rs2.next()){
+                System.out.println("Publisher does not exist\nGoing back to main menu");
+                return;
+            }
 
             pstmt = conn.prepareStatement(
                     "INSERT INTO Books (bookTitle, yearPublished, numberPages, groupName, publisherName) VALUES (?, ?, ?, ?, ?)"
@@ -403,6 +454,23 @@ public class CECS323Jdbc {
         try {
             System.out.println("Input book title to delete: ");
             String title = in.nextLine();
+            while(title.isEmpty()){
+                System.out.println("Title is empty. Try again");
+                System.out.println("Input book title: ");
+                 title = in.nextLine();
+            }
+            
+            pstmt = conn.prepareStatement (
+                    "SELECT bookTitle FROM Books WHERE bookTitle = ?"
+            );
+            pstmt.setString(1,title);
+            ResultSet rs2 = pstmt.executeQuery();
+            if(!rs2.next()){
+                System.out.println("Book does not exist\nGoing back to main menu");
+                return;
+            }
+            
+            
 
             pstmt = conn.prepareStatement(
                     "DELETE FROM Books WHERE bookTitle = ?"
