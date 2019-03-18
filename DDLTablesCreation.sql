@@ -1,36 +1,35 @@
+--WritingGroup is the table which consists of the groups that wrote a book
 CREATE TABLE WritingGroup(
   groupName varchar(200) NOT NULL,
   headWriter varchar(200) NOT NULL,
   yearFormed date NOT NULL,
   subject varchar(200) NOT NULL,
-  CONSTRAINT groups_pk PRIMARY KEY(groupName)
+  CONSTRAINT groups_pk PRIMARY KEY(groupName) --the primary key will be used for identifying the books written by a group
 );
 
+--Publishers is the company that licenses the books for distribution
 CREATE TABLE Publishers(
   publisherName varchar(200) NOT NULL,
   publisherAddress varchar(500) NOT NULL,
   publisherPhone varchar(200) NOT NULL,
   publisherEmail varchar(200) NOT NULL,
-  CONSTRAINT publishers_fk PRIMARY KEY(publisherName)
+  CONSTRAINT publishers_fk PRIMARY KEY(publisherName)--the PK will be used for identifying which books it has published
 );
 
+--The document that is written by a Writing Group and published by a Publisher
 CREATE TABLE Books(
   groupName varchar(200) NOT NULL,
   bookTitle varchar(200) NOT NULL,
   publisherName varchar(200) NOT NULL,
-  yearPublished integer NOT NULL,
+  yearPublished integer NOT NULL, 
   numberPages integer NOT NULL,
-  CONSTRAINT books_pk PRIMARY KEY(groupName, bookTitle),
+  CONSTRAINT books_pk PRIMARY KEY(groupName, bookTitle), --the groupName and bookTitle is used as a PK for identifying each book
   CONSTRAINT books_uk01 UNIQUE(bookTitle, publisherName),
-  CONSTRAINT books_groups_fk01 FOREIGN KEY(groupName) REFERENCES WritingGroup(groupName),
-  CONSTRAINT books_publishers_fk02 FOREIGN KEY(publisherName) REFERENCES Publishers(publisherName)
+  CONSTRAINT books_groups_fk01 FOREIGN KEY(groupName) REFERENCES WritingGroup(groupName),--this FK comes from the WritingGroup
+  CONSTRAINT books_publishers_fk02 FOREIGN KEY(publisherName) REFERENCES Publishers(publisherName)--this FK comes from the Publishers
 );
 
-/*
-    Note that Al Gore is the headWriter of two separate book
-    clubs, and there are multiple clubs with equiv year formed
-    as well as subject.
-*/
+--data entries for WritingGroup
 INSERT INTO WritingGroup (groupName, headWriter, yearFormed, subject)
     VALUES ('Science Writers',         'James Hall',       date(2015),  'Science'),
     ('Scientists of Fiction', 'Aaron Andrews',    date(2011),  'Fiction'),
@@ -43,9 +42,7 @@ INSERT INTO WritingGroup (groupName, headWriter, yearFormed, subject)
     ('Political Activists',  'John Goodman',     date(1997),  'Politics'),
     ('Ocean and Shore Club', 'Sandy Beach',      date(2008),  'Nature');
 
-/*
-    Added some publisherAddress to the same state for testing purposes.
-*/
+--data entries for Publishers
 INSERT INTO Publishers (publisherName, publisherAddress, publisherPhone, publisherEmail)
     VALUES ('CenTech Publishing Co.',       '1000 South Lane, Utah',                '562-111-1111',  'contact@centech.com'),
     ('Pearson Pub. Co.',             '2777 Ximeno Ave, California',          '661-312-8899',  'personpub@pearson.com'),
@@ -59,6 +56,7 @@ INSERT INTO Publishers (publisherName, publisherAddress, publisherPhone, publish
     ('Harper Collins Pub. Co.',      '1234 Snake Road, Texas',               '211-215-5445',  'harper@collins.com'),
     ('Simon Pub. Co.',               '2334 Tree Lane, Pennsylvania',         '544-122-3555',  'simon@simonpub.com');
     
+--data entries for Books
 INSERT INTO Books (groupName, bookTitle, publisherName, yearPublished, numberPages)
     VALUES ('Science Writers',  'Guide to the Galaxy',      'CenTech Publishing Co.', 2014,  300),
     ('Science Writers',  'Cosmos',                   'Pearson Pub. Co.',       2011,  450),
