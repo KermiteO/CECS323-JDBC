@@ -1,0 +1,139 @@
+1.
+Group Name
+----------
+Science Writers
+Scientists of Fiction
+Naturalists on Paper
+Myth and Religion
+LA Philosophy
+Communist Writers
+Union of Concerned Scientists
+Politcal USA
+Political Activists
+Ocean and Shore Club
+
+2.
+Input a group name: Science Writers
+Group Name                    Book Title                    Publisher Name                Year Published                Pages                         Publisher Address             Publisher Phone               Publisher Email               Head Writer                   Year Formed                   Subject                       
+Science Writers               Cosmos                        Pearson Pub. Co.              2011                          450                           2777 Ximeno Ave, California   661-312-8899                  personpub@pearson.com         James Hall                    1975-07-08                    Science                       
+Science Writers               Guide to the Galaxy           CenTech Publishing Co.        2014                          300                           1000 South Lane, Utah         562-111-1111                  contact@centech.com           James Hall                    1975-07-08                    Science                       
+Science Writers               On the Origin of Species      Fuckthisclass                 2009                          740                           suckmydick street             23423465                      asdfasdfsda                   James Hall                    1975-07-08                    Science                       
+Science Writers               The Selfish Gene              Fuckthisclass                 2005                          600                           suckmydick street             23423465                      asdfasdfsda                   James Hall                    1975-07-08                    Science                       
+Press "ENTER" to continue...
+
+3.
+Publisher Name
+--------------
+CenTech Publishing Co.
+Cengage Pub. Co.
+Harper Collins Pub. Co.
+Houghton Mifflin Pub. Co.
+Kondasha Pub. Co.
+McGraw-Hill Pub. Co.
+Pearson Pub. Co.
+Random House Pub. Co.
+Scholastic Pub. Co.
+Simon Pub. Co.
+Wiley Pub. Co.
+Press "ENTER" to continue...
+
+4.
+Input a publisher name: McGraw-Hill Pub. Co.
+Publisher                     Publisher Address                  Publisher Phone               Publisher Email               Book Title                         Year Published           Pages                    Group Name                         HeadWriter                    Year Formed              Subject                            
+McGraw-Hill Pub. Co.          2000 Avenida Rotunda, Washington   445-251-2115                  mcgraw@hill.com               The Snow Leopard                   2009                     200                      Naturalists on Paper               Roger Adams                   1975-06-24               Nature                             
+McGraw-Hill Pub. Co.          2000 Avenida Rotunda, Washington   445-251-2115                  mcgraw@hill.com               Silent Spring                      2003                     415                      Naturalists on Paper               Roger Adams                   1975-06-24               Nature                             
+McGraw-Hill Pub. Co.          2000 Avenida Rotunda, Washington   445-251-2115                  mcgraw@hill.com               Under the Sea Wind                 2011                     501                      Ocean and Shore Club               Sandy Beach                   1975-07-01               Nature                             
+
+5.
+Book Title
+----------
+Communist Manifesto
+Critique of Hegels Philosophy
+Das Kapital
+The State and Revolution
+Beyond Good and Evil
+Critique of Pure Reason
+Meditations on First Philosophy
+Platos Republic
+American Gods
+Mere Christianity
+Mythology
+The Holy Bible
+All About Yosemite
+Pilgrim at Tinker Creek
+Silent Spring
+The Snow Leopard
+Moby Dick
+Ocean
+The Edge of the Sea
+The Sea Around Us
+Under the Sea Wind
+A Theory of Justice
+The Prince
+The Second Treatise Of Government
+On Libery
+Political Liberalism
+Cosmos
+Guide to the Galaxy
+On the Origin of Species
+The Selfish Gene
+1984
+Enders Game
+Neuromancer
+The Forever War
+A History of Extinction
+Climate Change: A Brief History
+Desert Solitaire
+Problems of the Pacific
+The Lorax
+Press "ENTER" to continue...
+
+
+6.
+Input a book title: 
+1984
+Input a group name: 
+Scientists of Fiction
+Title                         Year Published                Number of Pages               Group Name                    Publisher Name                
+1984                          1995                          460                           Scientists of Fiction         Simon Pub. Co.                
+Press "ENTER" to continue...
+
+7.
+Input book title: 
+To Kill A Mockingbird
+Input year published: 
+1960
+Input number of pages: 
+281
+Input group name: 
+Communist Writers
+Input publisher name: 
+Cengage Pub. Co.
+Title                         Year Published                Number of Pages               Group Name                    Publisher Name                
+To Kill A Mockingbird         1960                          281                           Communist Writers             Cengage Pub. Co.              
+Book has been added!
+
+8.
+Enter publisher name
+Warner Books Pub.
+Enter publisher address
+6225 Emil St.
+Enter publisher phone number
+555-555-5555
+Enter publisher email
+books@warner.com
+Enter publisher that's to be replaced
+Simon Pub. Co.
+inserting publisher!
+
+Publisher Name                Publisher Address                  Publisher Phone               Publisher Email               
+Warner Books Pub.             6225 Emil St.                      555-555-5555                  books@warner.com              
+New publisher has been added!
+Simon Pub. Co. has been replaced and removed
+
+9.
+Input book title to delete: 
+1984
+Input corresponding writing group: 
+Scientists of Fiction
+Book successfully removed!
