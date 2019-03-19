@@ -216,6 +216,8 @@ public class JDBCSampleSource {
         try {
             System.out.println("Input a book title: ");
             String bookTitle = in.nextLine();
+            System.out.println("Input a group name: ");
+            String writingGroup = in.nextLine();
             pstmt = conn.prepareStatement(
                     "SELECT * FROM Books NATURAL JOIN WritingGroup WHERE bookTitle = ?"
             );
@@ -284,6 +286,15 @@ public class JDBCSampleSource {
                  group = in.nextLine();
                 
             }
+            pstmt = conn.prepareStatement("SELECT bookTitle, groupName FROM Books WHERE bookTitle = ? AND groupName = ?");
+            pstmt.setString(1, title);
+            pstmt.setString(2, group);
+            ResultSet rs3 = pstmt.executeQuery();
+            if(rs3.next()){
+                System.out.println("This book and group already exist!\nReturning to main menu");
+                return;
+            }
+                
             pstmt = conn.prepareStatement (
                     "SELECT groupName FROM WritingGroup WHERE groupName = ?"
             );
@@ -293,6 +304,7 @@ public class JDBCSampleSource {
                 System.out.println("Group does not exist\nGoing back to main menu");
                 return;
             }
+                
             
             System.out.println("Input publisher name: ");
             String publisher = in.nextLine();
@@ -370,6 +382,50 @@ public class JDBCSampleSource {
             System.out.println("Enter publisher that's to be replaced");
             String previousPublisher = in.nextLine();
             
+            PreparedStatement pstmt2 = conn.prepareStatement (
+                    "SELECT publisherName FROM Publishers WHERE publisherName = ?"
+            );
+            pstmt2.setString(1,previousPublisher);
+            ResultSet rs2 = pstmt2.executeQuery();
+            if(!rs2.next()){
+                System.out.println("Old publisher does not exist\nInserting new publisher only");
+                pstmt=conn.prepareStatement("insert into publishers values(?,?,?,?)");  
+            pstmt.setString(1,name);//1 specifies the first parameter in the query  
+            pstmt.setString(2,address);
+            pstmt.setString(3,phone);
+            pstmt.setString(4,email);
+             System.out.println("inserting publisher...");
+            
+            pstmt.executeUpdate();  
+            
+             pstmt = conn.prepareStatement("SELECT * FROM Publishers WHERE publisherName = ?");
+            pstmt.setString(1, name);
+            ResultSet rs = pstmt.executeQuery();
+            
+            displayFormat = "%-30s%-35s%-30s%-30s\n";
+            System.out.printf(displayFormat, "Publisher Name", "Publisher Address", 
+                    "Publisher Phone", "Publisher Email");
+            
+            boolean inside = false;
+            while (rs.next()) {
+                inside = true;
+                //Retrieve by column name
+                name = rs.getString("publisherName");
+                address = rs.getString("publisherAddress");
+                phone = rs.getString("publisherPhone");
+                email = rs.getString("publisherEmail");
+
+                //Display values
+                System.out.printf(displayFormat,
+                        dispNull(name),dispNull(address), dispNull(phone),dispNull(email));
+            }
+            rs.close();
+            
+            System.out.println("New publisher has been added!");  
+            pstmt.close(); 
+                return;
+            }
+            
             pstmt=conn.prepareStatement("insert into publishers values(?,?,?,?)");  
             pstmt.setString(1,name);//1 specifies the first parameter in the query  
             pstmt.setString(2,address);
@@ -390,29 +446,27 @@ public class JDBCSampleSource {
             pstmt.setString(1, previousPublisher);
             pstmt.executeUpdate();
             
-            pstmt = conn.prepareStatement("SELECT * FROM Books WHERE publisherName = ?");
+            pstmt = conn.prepareStatement("SELECT * FROM Publishers WHERE publisherName = ?");
             pstmt.setString(1, name);
             ResultSet rs = pstmt.executeQuery();
             
-            displayFormat = "%-30s%-35s%-30s%-30s%-35s\n";
-            System.out.printf(displayFormat, "Title", "Year Published", 
-                    "Number of Pages", "Group Name", "Publisher Name");
+            displayFormat = "%-30s%-35s%-30s%-30s\n";
+            System.out.printf(displayFormat, "Publisher Name", "Publisher Address", 
+                    "Publisher Phone", "Publisher Email");
             
             boolean inside = false;
             while (rs.next()) {
                 inside = true;
                 //Retrieve by column name
-                String title = rs.getString("bookTitle");
-                String year = rs.getString("yearPublished");
-                String pages = rs.getString("numberPages");
-                String group = rs.getString("groupName");
-                String publisher = rs.getString("publisherName");
-
+                //Retrieve by column name
+                name = rs.getString("publisherName");
+                address = rs.getString("publisherAddress");
+                phone = rs.getString("publisherPhone");
+                email = rs.getString("publisherEmail");
 
                 //Display values
                 System.out.printf(displayFormat,
-                        dispNull(title),dispNull(year), dispNull(pages),dispNull(group),
-                        dispNull(publisher));
+                        dispNull(name),dispNull(address), dispNull(phone),dispNull(email));
             }
             rs.close();
             
@@ -438,14 +492,7 @@ public class JDBCSampleSource {
                 }
             } catch (SQLException se2) {
             }// nothing we can do
-            try {
-                if (conn != null) {
-                    conn.close();
-                    return;
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }//end finally try
+            
         }//end try
         }
     
@@ -454,54 +501,37 @@ public class JDBCSampleSource {
         try {
             System.out.println("Input book title to delete: ");
             String title = in.nextLine();
+            System.out.println("Input corresponding writing group: ");
+            String group = in.nextLine();
             while(title.isEmpty()){
                 System.out.println("Title is empty. Try again");
                 System.out.println("Input book title: ");
                  title = in.nextLine();
             }
+            while(group.isEmpty()){
+                System.out.println("Group is empty. Try again");
+                System.out.println("Input writing group: ");
+                 group = in.nextLine();
+            }
             
-            pstmt = conn.prepareStatement (
-                    "SELECT bookTitle FROM Books WHERE bookTitle = ?"
-            );
-            pstmt.setString(1,title);
-            ResultSet rs2 = pstmt.executeQuery();
-            if(!rs2.next()){
-                System.out.println("Book does not exist\nGoing back to main menu");
+            pstmt = conn.prepareStatement("SELECT bookTitle, groupName FROM Books WHERE bookTitle = ? AND groupName = ?");
+            pstmt.setString(1, title);
+            pstmt.setString(2, group);
+            ResultSet rs3 = pstmt.executeQuery();
+            if(!rs3.next()){
+                System.out.println("This book and group don't exist!\nReturning to main menu");
                 return;
             }
             
-            
-
             pstmt = conn.prepareStatement(
-                    "DELETE FROM Books WHERE bookTitle = ?"
+                    "DELETE FROM Books WHERE bookTitle = ? AND groupName = ?"
             );
             pstmt.setString(1, title);
+            pstmt.setString(2, group);
             pstmt.executeUpdate();
 
             System.out.println("Book successfully removed...");
             
-            pstmt = conn.prepareStatement(
-                    "SELECT bookTitle FROM Books"
-            );
-            ResultSet rs = pstmt.executeQuery();
-
-            System.out.println("Book Title");
-            
-            
-            while (rs.next()) {
-                //Retrieve by column name
-                String btitle = rs.getString("bookTitle");
-                
-
-                //Display values
-                System.out.println(btitle);
-                
-            }
-            
-
-            rs.close();
-            
-            System.out.println("Book has been removed...");
 
             promptEnterKey();
         } catch (SQLException e) {
@@ -521,6 +551,7 @@ public class JDBCSampleSource {
         System.out.println("7 : Insert a new book");
         System.out.println("8 : Insert a new publisher");
         System.out.println("9 : Remove a book");
+        System.out.println("ENTER (q) to exit");
         
     }
     
@@ -565,6 +596,8 @@ public class JDBCSampleSource {
                     case "6": listBook();
                         break;
                     case "7": addBook();
+                        break;
+                    case "8": insertPublisher();
                         break;
                     case "9": removeBook();
                         break;
