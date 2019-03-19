@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 import java.sql.*;
 import java.util.*;
@@ -301,7 +297,7 @@ public class JDBCSampleSource {
             pstmt.setString(1,group);
             ResultSet rs2 = pstmt.executeQuery();
             if(!rs2.next()){
-                System.out.println("Group does not exist\nGoing back to main menu");
+                System.out.println("Group does not exist\nGoing back to main menu\n");
                 return;
             }
                 
@@ -356,7 +352,7 @@ public class JDBCSampleSource {
             }
             rs.close();
 
-            System.out.println("Book has been added...");
+            System.out.println("Book has been added!\n");
 
             promptEnterKey();
         } catch (SQLException e) {
@@ -388,7 +384,7 @@ public class JDBCSampleSource {
             pstmt2.setString(1,previousPublisher);
             ResultSet rs2 = pstmt2.executeQuery();
             if(!rs2.next()){
-                System.out.println("Old publisher does not exist\nInserting new publisher only");
+                System.out.println("Old publisher does not exist\nInserting new publisher only\n");
                 pstmt=conn.prepareStatement("insert into publishers values(?,?,?,?)");  
             pstmt.setString(1,name);//1 specifies the first parameter in the query  
             pstmt.setString(2,address);
@@ -421,7 +417,7 @@ public class JDBCSampleSource {
             }
             rs.close();
             
-            System.out.println("New publisher has been added!");  
+            System.out.println("New publisher has been added!\n");  
             pstmt.close(); 
                 return;
             }
@@ -432,7 +428,7 @@ public class JDBCSampleSource {
             pstmt.setString(3,phone);
             pstmt.setString(4,email);
             
-            System.out.println("inserting publisher...");
+            System.out.println("inserting publisher!\n");
             
             pstmt.executeUpdate();  
             
@@ -470,7 +466,8 @@ public class JDBCSampleSource {
             }
             rs.close();
             
-            System.out.println("New publisher has been added!");
+            System.out.println("New publisher has been added!\n" + previousPublisher
+            + " has been replaced and removed\n");
 
             
             
@@ -519,7 +516,7 @@ public class JDBCSampleSource {
             pstmt.setString(2, group);
             ResultSet rs3 = pstmt.executeQuery();
             if(!rs3.next()){
-                System.out.println("This book and group don't exist!\nReturning to main menu");
+                System.out.println("This book and group don't exist!\nReturning to main menu\n");
                 return;
             }
             
@@ -530,7 +527,7 @@ public class JDBCSampleSource {
             pstmt.setString(2, group);
             pstmt.executeUpdate();
 
-            System.out.println("Book successfully removed...");
+            System.out.println("Book successfully removed!\n");
             
 
             promptEnterKey();
@@ -541,7 +538,7 @@ public class JDBCSampleSource {
 
     
      public static void displayOptions(){
-        System.out.println("What would you like to do?");
+        System.out.println("\nWhat would you like to do?");
         System.out.println("1 : List all writing groups");
         System.out.println("2 : List data for a specific group");
         System.out.println("3 : List all publishers");
@@ -551,7 +548,7 @@ public class JDBCSampleSource {
         System.out.println("7 : Insert a new book");
         System.out.println("8 : Insert a new publisher");
         System.out.println("9 : Remove a book");
-        System.out.println("ENTER (q) to exit");
+        System.out.println("ENTER (q) to exit\n");
         
     }
     
@@ -564,7 +561,17 @@ public class JDBCSampleSource {
         System.out.print("Name of the database (not the user account): ");
         DBNAME = in.nextLine();
         // Constructing the database URL connection string
-        DB_URL = DB_URL + DBNAME;
+        System.out.print("Database username: ");
+        USER = in.nextLine();
+         if (!USER.isEmpty()){ 
+            System.out.print("Database password: ");
+            PASSWORD = in.nextLine(); //PASSWORD ASKED ONLY WHERE THERES A USER
+            DB_URL = DB_URL  + DBNAME + ";user="+ USER + ";password=" + PASSWORD;
+        }
+        else DB_URL = DB_URL + DBNAME; //NO USER OR PASS USED WHEN NO USER AND PASS IS GIVEN
+        
+        
+        //DB_URL = DB_URL + DBNAME;
         conn = null; // initialize the connection
         pstmt = null; // initialize the statement that we're using
         
